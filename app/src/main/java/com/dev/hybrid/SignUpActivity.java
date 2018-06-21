@@ -1,5 +1,6 @@
 package com.dev.hybrid;
 
+import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -109,10 +110,14 @@ public class SignUpActivity extends AppCompatActivity {
         }
     });
 
+    spCity.setSelection(cities.length-1);
+    chkRead.setChecked(true);
+
     }
 
     public void submit(View view) {
 
+        startActivity(new Intent(this,Menus.class));
         String gender="";
 
 
