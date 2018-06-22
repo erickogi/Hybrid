@@ -1,8 +1,12 @@
 package com.dev.hybrid;
 
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,12 +16,19 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.PopupMenu;
+import android.widget.TimePicker;
 import android.widget.Toast;
+
+import java.util.Calendar;
+
 //implements   PopupMenu.OnMenuItemClickListener
-public class Menus extends AppCompatActivity implements   PopupMenu.OnMenuItemClickListener {
+public class Menus extends AppCompatActivity implements   PopupMenu.OnMenuItemClickListener, DatePickerDialog.OnDateSetListener,TimePickerDialog.OnTimeSetListener {
 
     private Button button,btnPopup;
+    DatePickerDialog datePickerDialog;
+    TimePickerDialog timePickerDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,11 +38,37 @@ public class Menus extends AppCompatActivity implements   PopupMenu.OnMenuItemCl
 
         registerForContextMenu(button);
 
+        Calendar mcurrentTime = Calendar.getInstance();
+        int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+        int minute = mcurrentTime.get(Calendar.MINUTE);
+        int year=mcurrentTime.get(Calendar.YEAR);
+        int month=mcurrentTime.get(Calendar.MONTH);
+        int day=mcurrentTime.get(Calendar.DAY_OF_MONTH);
+
+
+
+        datePickerDialog = new DatePickerDialog(
+    Menus.this, Menus.this, year, month, day);
+
+        timePickerDialog = new TimePickerDialog(
+                Menus.this, Menus.this, hour,minute,true);
+
+        datePickerDialog.setCanceledOnTouchOutside(false);
+        datePickerDialog.setTitle("Age picker");
+
 
         btnPopup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showPopUp(v);
+                //showPopUp(v);
+
+
+                //timePickerDialog.show();
+               // datePickerDialog.show();
+
+
+                startActivity(new Intent(Menus.this,NavActivity.class));
+
             }
         });
 
@@ -221,4 +258,21 @@ public class Menus extends AppCompatActivity implements   PopupMenu.OnMenuItemCl
 
     }
 
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+
+        String date=dayOfMonth+"-"+month+1+"-"+year;
+        Snackbar.make(btnPopup, date, Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
+
+       // Toast.makeText(this, "Date :  "+date, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        String date=hourOfDay+"-"+minute;
+        Snackbar.make(btnPopup, date, Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
+
+    }
 }
